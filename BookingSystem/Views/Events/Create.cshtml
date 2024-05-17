@@ -1,0 +1,110 @@
+﻿@model BookingSystem.Models.Event
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create an Event</h1>
+
+<h4>Event Information</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartTime" class="control-label"></label>
+                <input asp-for="StartTime" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndTime" class="control-label"></label>
+                <input asp-for="EndTime" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+
+            <h4>Creator Information</h4>
+
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <input type="text" id="eventUserIdInput">
+                <input type="submit" value="Check ID" class="btn btn-warning" onclick="checkEventUserExists(document.getElementById('eventUserIdInput').value, event)"></input>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+                <label class="control-label" id="userNameDisplay"></label>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function checkEventUserExists(id) {
+            console.log("Checking event existence...");
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', `/Events/CheckEventUserExists/${id}`, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            console.log("Response received:", response);
+                            if (response.exists) {
+                                //alert("User exists in the database.");
+                                //console.log("User exists.");
+                                // Perform actions if event exists
+                                document.getElementById('userNameDisplay').textContent = response.fullName;
+                            } else {
+                                //alert("User does not exist in the database.");
+                                //console.log("User does not exist.");
+                                document.getElementById('userNameDisplay').textContent = 'User not found';
+                                // Perform actions if event does not exist
+                            }
+                        } catch (error) {
+                            console.error("Error parsing response:", error);
+                        }
+                    } else {
+                        alert('Error: ' + xhr.status);
+                        console.error('Error: ' + xhr.status);
+                    }
+                }
+            };
+            xhr.send();
+            event.preventDefault(); // Prevent default form submission
+        }
+
+        document.getElementById('eventUserIdInput').addEventListener('input', function () {
+            var userId = this.value;
+            if (userId.trim() !== '') {
+                checkUserExistsAndGetName(userId);
+            } else {
+                document.getElementById('userNameDisplay').textContent = '';
+            }
+        });
+    </script>
+}

@@ -23,15 +23,15 @@ namespace BookingSystem.Models
         [Display(Name = "Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        public DateTime? Date { get; set;}
+        public DateTime Date { get; set;}
         [Display(Name = "Start Time")]
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime? StartTime { get; set;}
+        public DateTime StartTime { get; set;}
         [Display(Name = "End Time")]
         [DataType(DataType.Time)]
         [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = true)]
-        public DateTime? EndTime { get; set;}
+        public DateTime EndTime { get; set;}
         [Display(Name = "Creator Name")]
         public string getUserFullName 
         {

@@ -35,22 +35,7 @@ namespace BookingSystem.Controllers
             || b.User.LastName.Contains(searchString)))
             && (bookingEventId == 0 || b.Event.Id == bookingEventId));
 
-
-
             IQueryable<Booking> bookingQuery = _context.Booking;
-            /*var test = _context.Booking
-                .Include(b => b.User);
-
-            if (bookingEventId != null && bookingEventId != 0)
-            {
-                bookings = bookings.Where(b => b.Event.Id == bookingEventId);
-            }
-
-            if(!String.IsNullOrEmpty(searchString))
-            {
-                bookings = bookings.Where(b => b.User.FirstName.Contains(searchString) ||
-                b.User.LastName.Contains(searchString));
-            }*/
 
             var bookingUserVM = new BookingUserViewModel
             {
@@ -198,5 +183,7 @@ namespace BookingSystem.Controllers
         {
             return _context.Booking.Any(e => e.Id == id);
         }
+
+       
     }
 }

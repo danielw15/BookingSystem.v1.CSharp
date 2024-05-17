@@ -361,3 +361,12 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/BookingSystem/Models/SeedUserData.cs
+/BookingSystem/Models/SeedEventData.cs
+/BookingSystem/Models/SeedBookingData.cs
+/BookingSystem/Migrations/20240510105328_InitialCreate.cs
+/BookingSystem/Migrations/20240510124132_CreationDate.cs
+/BookingSystem/Migrations/20240512194904_Booking.cs
+/BookingSystem/Migrations/BookingSystemContextModelSnapshot.cs
+/BookingSystem/Properties/launchSettings.json
+/BookingSystem/Properties/serviceDependencies.json

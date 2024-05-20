@@ -12,6 +12,33 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <h4>User Information</h4>
+
+            <div class="form-group">
+                <label asp-for="User.Id" class="control-label"></label>
+                <input type="text" id="bookingUserIdInput">
+                <input type="submit" value="Check User ID" class="btn btn-warning" onclick="checkBookingUserExists(document.getElementById('bookingUserIdInput').value)">
+                <span asp-validation-for="User.Id" class="text-danger"></span>
+                <label class="control-label" id="bookingUserNameDisplay"><b>User: </b></label>
+            </div>
+            <h4>Event Information</h4>
+
+            <div class="form-group">
+                <label asp-for="Event.Id" class="control-label"></label>
+                <input type="text" id="bookingEventIdInput">
+                <input type="submit" value="Check Event ID" class="btn btn-warning" onclick="checkBookingEventExists(document.getElementById('bookingEventIdInput').value)">
+                <span asp-validation-for="Event.Id" class="text-danger"></span>
+                <label class="control-label" id="bookingEventTitleDisplay"><b>Title: </b></label>
+                <br />
+                <label class="control-label" id="bookingEventDescriptionDisplay"><b>Description: </b></label>
+                <br />
+                <label class="control-label" id="bookingEventDateDisplay"><b>Date: </b></label>
+                <br />
+                <label class="control-label" id="bookingEventTimeDisplay"><b>Time: </b></label>
+                <br />
+            </div>
+            
+            <h4>Booking Information</h4>
             <div class="form-group">
                 <label asp-for="StartTime" class="control-label"></label>
                 <input asp-for="StartTime" class="form-control" />
@@ -23,10 +50,11 @@
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IsBooked" class="control-label"></label>
-                <input asp-for="IsBooked" class="form-control" />
-                <span asp-validation-for="IsBooked" class="text-danger"></span>
+                <label asp-for="Event.Date" class="control-label"></label>
+                <label class="form-control" id="bookingDateDisplay">Date of picked event will be shown here.</label>
+                <span asp-validation-for="Event.Date" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -39,5 +67,142 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+
+        function checkBookingUserExists(id) {
+            console.log("Checking Booking User existence...");
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', `/Bookings/CheckBookingUserIdExists/${id}`, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            console.log("Response received:", response);
+                            if (response.exists) {
+                                //alert("User exists in the database.");
+                                console.log("Booking User exists.");
+                                // Perform actions if event exists
+                                document.getElementById('bookingUserNameDisplay').innerHTML = "<b>User:</b> " + response.fullName;
+                            } else {
+                                //alert("User does not exist in the database.");
+                                console.log("Booking User does not exist.");
+                                document.getElementById('bookingUserNameDisplay').innerHTML = '<b>User:</b> not found';
+                                // Perform actions if event does not exist
+                            }
+                        } catch (error) {
+                            console.error("Error parsing response:", error);
+                        }
+                    } else {
+                        alert('Error: ' + xhr.status);
+                        console.error('Error: ' + xhr.status);
+                    }
+                }
+            };
+            xhr.send();
+            //event.preventDefault(); //Prevent default form submission
+        }
+
+    </script>
+
+    <script>
+        function checkBookingEventExists(id) {
+            console.log("Checking Booking Event existence...");
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', `/Bookings/CheckBookingEventIdExists/${id}`, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            console.log("Response received:", response);
+                            if (response.exists) {
+                                //alert("User exists in the database.");
+                                console.log("Booking Event exists.");
+                                // Perform actions if event exists
+                                document.getElementById('bookingEventTitleDisplay').innerHTML = "<b>Title:</b> " + response.eventTitle + " <br />";
+                                 document.getElementById('bookingEventDescriptionDisplay').innerHTML = "<b>Description:</b> " + response.eventDescription + " <br />";
+                                document.getElementById('bookingEventDateDisplay').innerHTML = "<b>Date:</b> " + response.eventDate + " <br />";
+                                document.getElementById('bookingEventTimeDisplay').innerHTML = "<b>Time:</b> " + response.eventStartTime + " - " + response.eventEndTime;
+                                document.getElementById('bookingDateDisplay').innerHTML = response.eventDate;
+                            } else {
+                                //alert("User does not exist in the database.");
+                                console.log("Booking Event does not exist.");
+                                document.getElementById('bookingEventTitleDisplay').innerHTML = "<b>Title:</b> not found";
+                                document.getElementById('bookingEventDescriptionDisplay').innerHTML = "<b>Description:</b> not found";
+                                document.getElementById('bookingEventDateDisplay').innerHTML = "<b>Date:</b> not found";
+                                document.getElementById('bookingEventTimeDisplay').innerHTML = "<b>Time:</b> not found";
+                                // Perform actions if event does not exist
+                            }
+                        } catch (error) {
+                            console.error("Error parsing response:", error);
+                        }
+                    } else {
+                        alert('Error: ' + xhr.status);
+                        console.error('Error: ' + xhr.status);
+                    }
+                }
+            };
+            xhr.send();
+            //event.preventDefault(); //Prevent default form submission
+        }
+        </script>
+
+    <script>
+        let typingTimerEvent;                //timer identifier
+        let doneIntervalEvent = 1300;  //time in ms (3 seconds)
+        let eventInput = document.getElementById('bookingEventIdInput');
+
+        //on keyup, start the countdown
+        eventInput.addEventListener('keyup', () => {
+            clearTimeout(typingTimerEvent);
+            if (eventInput.value) {
+                typingTimerEvent = setTimeout(doneTypingEvent, doneIntervalEvent);
+            }
+        });
+
+        //user is "finished typing," do something
+        function doneTypingEvent() {
+
+            var eventId = document.getElementById('bookingEventIdInput').value;
+            if (eventId.trim() !== '') {
+                checkBookingEventExists(eventId);
+            } else {
+                document.getElementById('bookingEventTitleDisplay').textContent = '';
+            }
+        }
+    </script>
+
+    <script>
+        //setup before functions
+        let typingTimerUser;                //timer identifier
+        let doneIntervalUser = 1300;  //time in ms (3 seconds)
+        let userInput = document.getElementById('bookingUserIdInput');
+
+        //on keyup, start the countdown
+        userInput.addEventListener('keyup', () => {
+            clearTimeout(typingTimerUser);
+            if (userInput.value) {
+                typingTimerUser = setTimeout(doneTypingUser, doneIntervalUser);
+            }
+        });
+
+        //user is "finished typing," do something
+        function doneTypingUser() {
+
+            var userId = document.getElementById('bookingUserIdInput').value;
+            if (userId.trim() !== '') {
+                checkBookingUserExists(userId);
+            } else {
+                document.getElementById('bookingUserNameDisplay').textContent = '';
+            }
+        }
+    </script>
 }

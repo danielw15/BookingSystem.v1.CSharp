@@ -43,7 +43,7 @@
 
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                <input type="text" id="eventUserIdInput">
+                <input asp-for="UserId" type="text" id="eventUserIdInput">
                 <input type="submit" value="Check ID" class="btn btn-warning" onclick="checkEventUserExists(document.getElementById('eventUserIdInput').value, event)"></input>
                 <span asp-validation-for="UserId" class="text-danger"></span>
                 <label class="control-label" id="userNameDisplay"></label>
@@ -98,13 +98,14 @@
             event.preventDefault(); // Prevent default form submission
         }
 
-        document.getElementById('eventUserIdInput').addEventListener('input', function () {
+      document.getElementById('eventUserIdInput').addEventListener('input',
+         function () {
             var userId = this.value;
             if (userId.trim() !== '') {
-                checkUserExistsAndGetName(userId);
-            } else {
-                document.getElementById('userNameDisplay').textContent = '';
-            }
-        });
+               checkEventUserExists(userId);
+             } else {
+                        document.getElementById('userNameDisplay').textContent = '';
+                    }
+          });
     </script>
 }

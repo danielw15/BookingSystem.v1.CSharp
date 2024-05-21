@@ -15,19 +15,19 @@
             <h4>User Information</h4>
 
             <div class="form-group">
-                <label asp-for="User.Id" class="control-label"></label>
-                <input type="text" id="bookingUserIdInput">
+                <label asp-for="UserId" class="control-label"></label>
+                <input asp-for="UserId" type="text" id="bookingUserIdInput">
                 <input type="submit" value="Check User ID" class="btn btn-warning" onclick="checkBookingUserExists(document.getElementById('bookingUserIdInput').value)">
-                <span asp-validation-for="User.Id" class="text-danger"></span>
+                <span asp-validation-for="UserId" class="text-danger"></span>
                 <label class="control-label" id="bookingUserNameDisplay"><b>User: </b></label>
             </div>
             <h4>Event Information</h4>
 
             <div class="form-group">
-                <label asp-for="Event.Id" class="control-label"></label>
-                <input type="text" id="bookingEventIdInput">
+                <label asp-for="EventId" class="control-label"></label>
+                <input asp-for="EventId" type="text" id="bookingEventIdInput">
                 <input type="submit" value="Check Event ID" class="btn btn-warning" onclick="checkBookingEventExists(document.getElementById('bookingEventIdInput').value)">
-                <span asp-validation-for="Event.Id" class="text-danger"></span>
+                <span asp-validation-for="EventId" class="text-danger"></span>
                 <label class="control-label" id="bookingEventTitleDisplay"><b>Title: </b></label>
                 <br />
                 <label class="control-label" id="bookingEventDescriptionDisplay"><b>Description: </b></label>
@@ -50,9 +50,9 @@
                 <span asp-validation-for="EndTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Event.Date" class="control-label"></label>
+                <label class="control-label"></label>
                 <label class="form-control" id="bookingDateDisplay">Date of picked event will be shown here.</label>
-                <span asp-validation-for="Event.Date" class="text-danger"></span>
+                <span class="text-danger"></span>
             </div>
 
             <div class="form-group">

@@ -5,15 +5,15 @@
 
     Dictionary<int, string> comparisonResultsStart = new Dictionary<int, string>()
             {
-                [-1] = "On Time",
+                [-1] = "Late",
                 [0] = "On Time",
-                [1] = "Late"
+                [1] = "On Time"
             };
     Dictionary<int, string> comparisonResultsEnd = new Dictionary<int, string>()
             {
-                [-1] = "Early",
+                [-1] = "On Time",
                 [0] = "On Time",
-                [1] = "On Time"
+                [1] = "Early"
             };
  
 }
@@ -30,7 +30,7 @@
         <select asp-for="BookingEventId" asp-items="Model.BookingEventsIds">
             <option value="">All</option>
         </select>
-        Title Search: <input type="text" asp-for="SearchString" />
+        Name Search: <input type="text" asp-for="SearchString" />
         <input type="submit" value="Filter" />
     </p>
 </form>

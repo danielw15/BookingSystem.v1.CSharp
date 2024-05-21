@@ -42,7 +42,7 @@ namespace BookingSystem.Controllers
 
             var bookingUserVM = new BookingUserViewModel
             {
-                BookingEventsIds = new SelectList(await bookingQuery.Select(b => b.Event!.Id).ToListAsync()),
+                BookingEventsIds = new SelectList(await bookingQuery.Select(b => b.Event!.Id).Distinct().ToListAsync()),
                 BookingUsers = new SelectList(await bookingQuery.Select(b => b.User).ToListAsync()),
                 BookingEvents = new SelectList(await bookingQuery.Select(b => b.Event).ToListAsync()),
                 Bookings = await bookings.ToListAsync()
@@ -87,7 +87,7 @@ namespace BookingSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StartTime,EndTime,IsBooked")] Booking booking)
+        public async Task<IActionResult> Create([Bind("Id,UserId,EventId,StartTime,EndTime,IsBooked")] Booking booking)
         {
             if (ModelState.IsValid)
             {
@@ -119,7 +119,7 @@ namespace BookingSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StartTime,EndTime,IsBooked")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,EventId,StartTime,EndTime,IsBooked")] Booking booking)
         {
             if (id != booking.Id)
             {

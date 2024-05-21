@@ -370,3 +370,7 @@ FodyWeavers.xsd
 /BookingSystem/Migrations/BookingSystemContextModelSnapshot.cs
 /BookingSystem/Properties/launchSettings.json
 /BookingSystem/Properties/serviceDependencies.json
+/BookingSystem/Migrations/20240521095351_BookingObjectFixed.cs
+/BookingSystem/Migrations/20240521095351_BookingObjectFixed.Designer.cs
+/BookingSystem/Migrations/20240521100703_BookingFKIdFixed.Designer.cs
+/BookingSystem/Migrations/20240521100703_BookingFKIdFixed.cs

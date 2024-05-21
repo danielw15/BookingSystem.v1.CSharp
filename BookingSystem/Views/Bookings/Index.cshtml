@@ -3,17 +3,17 @@
 @{
     ViewData["Title"] = "Index";
 
-    Dictionary<int, string> comparisonResultsStart = new Dictionary<int, string>()
-            {
-                [-1] = "Late",
-                [0] = "On Time",
-                [1] = "On Time"
-            };
-    Dictionary<int, string> comparisonResultsEnd = new Dictionary<int, string>()
+    Dictionary<int, string> comparisonResultsStart = new Dictionary<int, string>(3)
             {
                 [-1] = "On Time",
                 [0] = "On Time",
-                [1] = "Early"
+                [1] = "Late"
+            };
+    Dictionary<int, string> comparisonResultsEnd = new Dictionary<int, string>(3)
+            {
+                [-1] = "Early",
+                [0] = "On Time",
+                [1] = "On Time"
             };
  
 }
@@ -96,7 +96,7 @@
                 @Html.DisplayFor(modelItem => item.EndTime)
             </td>
                 <td>
-                    @Html.DisplayFor(modelItem => comparisonResultsStart[item.StartTime.CompareTo(item.Event.StartTime)]) - @Html.DisplayFor(modelItem => comparisonResultsEnd[item.EndTime.CompareTo(item.Event.EndTime)])
+                    @Html.DisplayFor(modelItem => comparisonResultsStart[item.StartTime.TimeOfDay.CompareTo(item.Event.StartTime.TimeOfDay)]) - @Html.DisplayFor(modelItem => comparisonResultsEnd[item.EndTime.TimeOfDay.CompareTo(item.Event.EndTime.TimeOfDay)])
                 </td>
                 
             <td>

@@ -227,6 +227,21 @@ namespace BookingSystem.Controllers
             }
             return Ok(new { exists = bookingUserExists, FullName = userFirstName + " " + userLastName });
         }
+
+        //will implement Checks so objects cannot be created with invalid FKs
+        // GET: Events/CheckIfEventAndUserExists/9
+        private async Task<bool> CheckIfEventAndUserExists(int idEvent, int idUser)
+        {
+            if(await BookingUserExists(idUser) && await BookingEventExists(idEvent))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
         private async Task<bool> BookingUserExists(int id)
         {
             return await _context.User.AnyAsync(e => e.Id == id);

@@ -67,6 +67,8 @@ namespace BookingSystem.Controllers
             }
 
             var booking = await _context.Booking
+                .Include(b => b.User)
+                .Include(b => b.Event)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {
